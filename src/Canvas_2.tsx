@@ -7,47 +7,34 @@ export const MatrixEffect: React.FC = () => {
     const canvas = canvasRef.current!;
     const ctx = canvas.getContext("2d")!;
 
-    const charSize = 10; // Base character size
-    let charWidth: number = 0;
-
+    const charSize = 10; // Adjust for smaller characters
     const resizeCanvas = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
-
-      // Set font and measure character width
-      ctx.font = `${charSize}px monospace`;
-      charWidth = ctx.measureText("M").width; // Measure a typical character
     };
 
     resizeCanvas();
     window.addEventListener("resize", resizeCanvas);
 
-    const cols = Math.floor(canvas.width / charWidth); // Columns based on exact character width
-    const ypos = Array.from(
-      { length: cols },
-      () => Math.random() * canvas.height
-    ); // Randomize initial positions
+    const cols = Math.floor(canvas.width / charSize) + 1; // Adjust column count
+    const ypos = Array(cols).fill(0);
 
     const drawMatrix = () => {
       ctx.fillStyle = "#0001";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       ctx.fillStyle = "#0f0";
-      ctx.font = `${charSize}px monospace`; // Set font size dynamically
+      ctx.font = `${charSize}px monospace`; // Adjust font size
 
       ypos.forEach((y, ind) => {
         const text = String.fromCharCode(Math.random() * 128);
-        const x = ind * charWidth; // Use exact character width for column spacing
+        const x = ind * charSize; // Adjust column width
         ctx.fillText(text, x, y);
         if (y > canvas.height + Math.random() * 10000) ypos[ind] = 0;
-        else ypos[ind] = y + charSize; // Vertical step matches font size
+        else ypos[ind] = y + charSize; // Adjust vertical step
       });
     };
 
-    // Draw an initial frame to pre-fill the screen
-    drawMatrix();
-
-    // Start the animation loop
     const intervalId = setInterval(drawMatrix, 50);
 
     return () => {

@@ -1,10 +1,10 @@
 import "./App.css";
-import { Canvas } from "./Canvas";
+import { MatrixEffect } from "./Canvas";
 
 function App() {
   return (
     <div>
-      <Canvas />
+      <MatrixEffect />
     </div>
   );
 }
